@@ -37,3 +37,4 @@ z <- c(2.7, 1)
 xl <- iris[, 3:5]
 class <- kNN(xl, z, k=6)
 points(z[1], z[2], pch = 22, bg = colors[class], asp = 1)
+##sadasd
