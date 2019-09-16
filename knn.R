@@ -67,19 +67,10 @@ plot(iris[, 3:4], pch = 21, bg = colors[iris$Species], col
 
 = colors[iris$Species], asp = 1)
 
+z <- c(2.7, 1) 
 
-xl <- iris[, 3:5]
+xl <- iris[, 3:5] 
 
-x=0.5
- while(x<7.5)
- {
-y=-1
- while(y<4){
- z <- c(x,y)
- #x1 <- iris[,3:5]
- class <- kNN(x1,z,6)
- points(z[1], z[2], pch = 1, col = colors[class], asp = 1)
- y=y+0.1
- }
- x=x+0.1
- }
+class <- kNN(xl, z, k=6) 
+
+points(z[1], z[2], pch = 22, bg = colors[class], asp = 1) 
