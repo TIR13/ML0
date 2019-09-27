@@ -33,7 +33,7 @@
 ```
 l <- dim(xl)[1]     
 n <- dim(xl)[2] - 1          
-##  Матрицf расстояний    
+##  Матрица расстояний    
 distances <- matrix(NA, l, 2)          
 for (i in 1:l)      
 {         
