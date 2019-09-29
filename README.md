@@ -3,6 +3,7 @@
 1. Метрические алгоритмы классификации 
 - [1NN](#1NN) 
 - [KNN](#KNN)
+- [KWNN](#KWNN)
 # Метрические алгоритмы классификации 
 ## 1NN 
 
@@ -128,4 +129,40 @@ return (class)
 2. При k=1 может иметь погрешность 
 
 3. При большом k , алгоритм выдаёт одинаковый ответ.
+
+## KWNN
+
+Метод k-взвешенных ближайших соседей (KWNN). Имеется объект u , необходимо определить к какому классу он относится.
+
+### Алгоритм
+
+1. Выбирается в каждом классе k ближайших объектов к u.
+2. Находим среднее расстояния до k ближайших объектов.
+3. Выбираем класс с наименьшим расстоянием и относим объект u к этому классу.
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
+
+
+**Реализация KWNN:**
+
+```
+weightsKWNN = function(i, k)
+{
+  (k + 1 - i) / k
+}
+kwNN <- function(xl, z, k,orderedXl)
+{
+  n <- dim(orderedXl)[2] - 1
+  weights = rep(0,3)
+  names(weights) <- c("setosa", "versicolor", "virginica")
+  classes <- orderedXl[1:k, n+1]
+  for(i in 1:k)
+  {
+    weights[classes[i]]<-weightsKWNN(i,k)+weights[classes[i]];
+  }
+  class <- names(which.max(weights))
+  return (class)
+}
+
+```
 
