@@ -2,6 +2,8 @@
 
 1. Метрические алгоритмы классификации 
 - [1NN](#1NN) 
+- [KNN](#KNN)
+
 # Метрические алгоритмы классификации 
 ## 1NN 
 -— 
@@ -113,8 +115,7 @@ return (class)
 } 
 
 ``` 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/5.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png)![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/5.png) 
 
 ## Преимущества 
 
