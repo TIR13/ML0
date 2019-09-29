@@ -2,11 +2,9 @@
 
 1. Метрические алгоритмы классификации 
 - [1NN](#1NN) 
-- [KNN](#KNN)
-
 # Метрические алгоритмы классификации 
 ## 1NN 
--— 
+
 Метод ближайших соседей (1NN). Относит классифицируемый объект к тому классу , к которому принадлежит его ближайший сосед 
 
 
@@ -70,7 +68,7 @@ orderedXl <- xl[order(distances[, 2]), ]
 
 ## KNN 
 
--— 
+
 Метод k ближайших соседей(KNN). Относит классифицируемый объект к тому классу , к которому принадлежат его k ближайшие соседи. 
 
 Суть метода: 
@@ -115,7 +113,8 @@ return (class)
 } 
 
 ``` 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png)![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/5.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/5.png) 
 
 ## Преимущества 
 
@@ -128,5 +127,4 @@ return (class)
 2. При k=1 может иметь погрешность 
 
 3. При большом k , алгоритм выдаёт одинаковый ответ.
-
 
