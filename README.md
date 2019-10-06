@@ -147,21 +147,18 @@ return (class)
 **Реализация KWNN:**
 
 ```
-weightsKWNN = function(i, k)
-{
-  (k + 1 - i) / k
-}
-kwNN <- function(xl, z, k,orderedXl)
+kwNN <- function(xl, z, k, q) 
 {
   n <- dim(orderedXl)[2] - 1
-  weights = rep(0,3)
-  names(weights) <- c("setosa", "versicolor", "virginica")
-  classes <- orderedXl[1:k, n+1]
-  for(i in 1:k)
-  {
-    weights[classes[i]]<-weightsKWNN(i,k)+weights[classes[i]];
+  orderedXl <- sortObjectsByDist(xl, z, euclideanDistance)  
+  classes <- orderedXl[1:k, n + 1] 
+  counts <- table(classes)
+   name <- c("setosa" = 0, "versicolor" = 0, "virginica" = 0)
+  for (i in 1:k ){
+    w <- q ^ i
+    name[[classes[i]]] <- name[[classes[i]]] + w
   }
-  class <- names(which.max(weights))
+  class <- names(which.max(name))
   return (class)
 }
 
