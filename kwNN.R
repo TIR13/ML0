@@ -1,12 +1,6 @@
-#ML0
+colors <- c("setosa" = "red", "versicolor" = "green3", "virginica" = "blue")
 
-colors <- c("setosa" = "red", "versicolor" = "green3",
-
-"virginica" = "blue")
-
-plot(iris[, 3:4], pch = 21, bg = colors[iris$Species],
-
-col = colors[iris$Species])
+plot(iris[, 3:4], pch = 21, bg = colors[iris$Species],col = colors[iris$Species])
 
 euclideanDistance <- function(u, v)
 
@@ -40,106 +34,58 @@ orderedXl <- xl[order(distances[, 2]), ]
 return (orderedXl);
 
 }
-weightsKWNN = function(i, k)
+kwNN <- function(xl, z, k, q) 
 {
-  (k + 1 - i) / k
-}
-
-kwNN <- function(xl, z, k,orderedXl)
-{
-  
   n <- dim(orderedXl)[2] - 1
-  weights = rep(0,3)
-  names(weights) <- c("setosa", "versicolor", "virginica")
-  classes <- orderedXl[1:k, n+1]
-  
-  for(i in 1:k)
-  {
-    weights[classes[i]]<-weightsKWNN(i,k)+weights[classes[i]];
+  orderedXl <- sortObjectsByDist(xl, z, euclideanDistance)  
+  classes <- orderedXl[1:k, n + 1] 
+  counts <- table(classes)
+   name <- c("setosa" = 0, "versicolor" = 0, "virginica" = 0)
+  for (i in 1:k ){
+    w <- q ^ i
+    name[[classes[i]]] <- name[[classes[i]]] + w
   }
-  class <- names(which.max(weights))
+  class <- names(which.max(name))
   return (class)
 }
-
-
-colors <- c("setosa" = "red", "versicolor" = "green3",
-
-"virginica" = "blue")
-
-plot(iris[, 3:4], pch = 21, bg = colors[iris$Species], col
-
-= colors[iris$Species], asp = 1)
-
 z <- c(2.7, 1) 
 
 xl <- iris[, 3:5] 
 
- orderedXl <- sortObjectsByDist(xl, z)
-      class <- kwNN(xl, z,6,orderedXl)
-
-
+orderedXl <- sortObjectsByDist(xl, z)
+class <- kwNN(xl, z,6,1)
 points(z[1], z[2], pch = 22, bg = colors[class], asp = 1) 
 
-Loo <- function(k,xl)
+Loo <- function(k,q,xl)
 
    {
-n = dim(xl)[1]
     sum =0
-    for(i in 1:(n)){
-      X=xl[-i, 1:3]
-      u=xl[i, 1:2]
-      orderedXl <- sortObjectsByDist(X, u)
-      
-      for(k in 1:(n-1)){
-        test=kwNN(X,u,k,orderedXl)
-        if(test != xl[i,3]){
-
+    for(i in 1:dim(xl)[1])
+       {
+        tmpXL <- rbind(xl[1:i-1, ],
+        xl[i+1:dim(xl)[1],])
+        xi <- c(xl[i,1], xl[i,2])
+        class <-kwNN(tmpXL,xi,k,q)
+        if(class != xl[i,3])
         sum=sum+1
        }
-}
-}
    sum=sum/dim(xl)[1]
    return(sum)
   }
-y <- rep(0,150)
+y <- rep(0,21)
 kk <- 0
-min <- 150
-for(k in 1:150){
-x <- c(1:150)
-y[k] <- Loo(k,xl)
+min <- 30
+x <- 0
+xx <- rep(0,21)
+for(k in 1:21){
+xx[k] <- x
+y[k] <- Loo(6,x,xl)
 if(y[k]<min){
 min <- y[k]
 kk <- k
 }
+x <- x+0.05
 }
-plot(x,y,type="l")
-label = paste("   K = ", kk, "\n", "   LOO = ", y[kk], sep = "")
-text(x[kk],y[kk],labels=label,pos=4)
-
-x=0.5
-
-while(x<7.5)
-
-{
-
-y=-1
-
-while(y<4)
-
-{
-
-z <- c(x,y)
-
-x1 <- iris[,3:5]
-      orderedXl <- sortObjectByDist(xl, z)
-      class <- kwnn(xl, z,k,orderedXl)
-
-points(z[1], z[2], pch = 1, col = colors[class], asp = 1)
-
-y=y+0.1
-
-}
-
-x=x+0.1
-
-}
+plot(xx,y,type="l")
+label = paste("   K = ", 6, "\n","q = ",xx[kk],"\n   LOO = ", round(y[kk],3), sep = "")
+text(0.9,y[kk],labels=label,pos=3)
