@@ -133,7 +133,10 @@ return (class)
 
 ## KWNN
 ---
-Метод k-взвешенных ближайших соседей (KWNN). Имеется объект u , необходимо определить к какому классу он относится.
+Метод k-взвешенных ближайших соседей (KWNN). Имеется объект u , необходимо определить к какому классу он относится. 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/kwnn.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/kwnn1.png) 
 
 ### Алгоритм
 
@@ -143,7 +146,11 @@ return (class)
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/6.png)
+
+Найдём оптимальное q для алгоритма kwnn с помощью Loo, при k=6
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/7.png)
+
+Оптимальное q при k=6 - это q=1
 **Реализация KWNN:**
 
 ```
