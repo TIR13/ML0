@@ -223,16 +223,7 @@ Loo <- function(k,xl)
     return(sum)
 }
 ```
-# Метод парзеновского окна
-
-Рассмотрим весовую функция 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо2.png)  как функцию не от ранга соседа, а как функция от расстояния ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо.png) 
-
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо1.png)
-,где K - невозрастающая и неотрицательная функция ядра  
-В этом случае метрический классификатор:
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо3.png) 
-
+ 
 # Метод парзеновского окна
 
 Рассмотрим весовую функция 
