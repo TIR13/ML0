@@ -143,7 +143,7 @@ return (class)
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/6.png)
-
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/7.png)
 **Реализация KWNN:**
 
 ```
@@ -153,12 +153,12 @@ kwNN <- function(xl, z, k, q)
   orderedXl <- sortObjectsByDist(xl, z, euclideanDistance)  
   classes <- orderedXl[1:k, n + 1] 
   counts <- table(classes)
-   name <- c("setosa" = 0, "versicolor" = 0, "virginica" = 0)
+  name <- c("setosa" = 0, "versicolor" = 0, "virginica" = 0)
   for (i in 1:k ){
     w <- q ^ i
     name[[classes[i]]] <- name[[classes[i]]] + w
   }
-  class <- names(which.max(name))
+  cl  ass <- names(which.max(name))
   return (class)
 }
 
