@@ -117,7 +117,7 @@ return (class)
 
 ``` 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/5.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Looknn.png) 
 
 ## Преимущества 
 
