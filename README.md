@@ -202,7 +202,7 @@ KWNN отличается от KNN тем , что учитывает ранг �
 
 6.Проделываем для всех k, ответом будет k с наименьшей ошибкой.
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/5.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Looknn.png) 
 
 ## Реализация метода Loo:
 
@@ -233,11 +233,26 @@ Loo <- function(k,xl)
 В этом случае метрический классификатор:
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо3.png) 
 
+# Метод парзеновского окна
+
+Рассмотрим весовую функция 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо2.png)  как функцию не от ранга соседа, а как функция от расстояния ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо.png) 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо1.png)
+,где K - невозрастающая и неотрицательная функция ядра  
+В этом случае метрический классификатор:
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо3.png) 
+
 h - шириной окна , u - играет ту же роль, что и число соседей. "Окно" - это сферическая окрестность u радиуса h, при попадании в которою облегающий объект xi голосует за отнесение объекта u к классу yi
+
+Рассмотрим формулы всех ядер:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпоф.png)
 
 ## Ядро Епонечникова
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_epan.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_epan.png)
  
 Реализация функции
 ```
@@ -254,6 +269,7 @@ epan <- function(r,h){
 ## Ядро Прямоугольное
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_rect.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_rect.png)
  
 Реализация функции
 ```
@@ -269,7 +285,8 @@ rectangle <- function(r,h){
 ## Ядро Треугольное
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_trey.png)
- 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_trey.png)
+
 Реализация функции
 ```
 trey <- function(r,h){
@@ -284,6 +301,7 @@ trey <- function(r,h){
 ## Ядро Квадратное
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_kvad.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_kvad.png)
  
 Реализация функции
 ```
@@ -300,6 +318,7 @@ kvad <- function(r,h){
 ## Ядро Гаусса
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_gaus.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_gaus.png)
  
 Реализация функции
 ```
@@ -312,6 +331,8 @@ gaus <- function(r,h){
   }
 }
 ```
+
+
 
 
 
