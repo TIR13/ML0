@@ -5,6 +5,7 @@
 - [KNN](#KNN)
 - [KWNN](#KWNN)
 - [Loo](#Метод-скользящего-контроля(Loo))
+- [Метод парзеновского окна](#Метод-парзеновского-окна)
 # Метрические алгоритмы классификации 
 ## 1NN 
 ---
@@ -220,6 +221,95 @@ Loo <- function(k,xl)
     }
     sum=sum/dim(xl)[1]
     return(sum)
+}
+```
+# Метод парзеновского окна
+
+Рассмотрим весовую функция 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо2.png)  как функцию не от ранга соседа, а как функция от расстояния ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо.png) 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо1.png)
+,где K - невозрастающая и неотрицательная функция ядра  
+В этом случае метрический классификатор:
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо3.png) 
+
+h - шириной окна , u - играет ту же роль, что и число соседей. "Окно" - это сферическая окрестность u радиуса h, при попадании в которою облегающий объект xi голосует за отнесение объекта u к классу yi
+
+## Ядро Епонечникова
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_epan.png)
+ 
+Реализация функции
+```
+epan <- function(r,h){
+  if(abs(r/h) <= 1){
+      return (3/4*(1-(r/h)^2))
+    } 
+   else {
+      return(0)
+  }
+}
+```
+
+## Ядро Прямоугольное
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_rect.png)
+ 
+Реализация функции
+```
+rectangle <- function(r,h){
+  if(abs(r/h) <= 1){
+      return (0.5)
+    } 
+   else {
+      return(0)
+  }
+}
+```
+## Ядро Треугольное
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_trey.png)
+ 
+Реализация функции
+```
+trey <- function(r,h){
+  if(abs(r/h) <= 1){
+      return ((2*pi)^(-0.5)*exp(-0.5*(r/h)^2))
+    } 
+  else {
+      return(0)
+  }
+}
+```
+## Ядро Квадратное
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_kvad.png)
+ 
+Реализация функции
+```
+kvad <- function(r,h){
+  if(abs(r/h) <= 1){
+      return (15/16*(1-(r/h)^2)^2)
+    } 
+  else {
+      return(0)
+  }
+
+}
+```
+## Ядро Гаусса
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_gaus.png)
+ 
+Реализация функции
+```
+gaus <- function(r,h){
+ if(abs(r/h) <= 1){
+    return ( (2*pi)^(-1/2) * exp(-1/2 * (r/h)^2 ) )
+  } 
+  else {
+    return(0)
+  }
 }
 ```
 
