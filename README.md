@@ -407,6 +407,10 @@ return(pots)
 
 }
 ```
+Результат работы алгоритма для Гауссовского ядра, при h=1
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/poten_func.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/pf_map.png)
 
 ## Плюсы:
 
