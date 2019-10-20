@@ -467,7 +467,7 @@ margin <- function(xl,classes,z,class){
 }
 
 ```
-Осталось 5 эталонных объектов. Скорость работы метода после алгоритма заметно улучшилась,а именно с 29 mins секунд до 1 mins.
+Осталось 5 эталонных объектов. Скорость работы метода после алгоритма заметно улучшилась,а именно с 29 mins до 1 mins.
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/STOLP.png)
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/stolp_map.png)
