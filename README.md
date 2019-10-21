@@ -421,6 +421,20 @@ return(pots)
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/poten_func.png)
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/pf_map.png)
 
+Список потенциалов:
+
+```
+[1] 1
+[1] 51
+[1] 71
+[1] 92
+[1] 102
+[1] 107
+[1] 120
+[1] 147
+
+```
+
 ## Плюсы:
 
 - высокая точность классификации
