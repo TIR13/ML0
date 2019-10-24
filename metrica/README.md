@@ -488,3 +488,110 @@ margin <- function(xl,classes,z,class){
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/grafik_stolp.png)
 
+## FRIS STOLP
+Одной из основных проблем, возникающих при решении задачи классификации каких-либо объектов, является проблема выбора меры схожести. Чаще всего в этой роли выступает кратчайшее расстояние, однако в некоторых задачах лучше использовать иную меру. Например функцию конкурентного сходства (Fris-фукция ) FRiS — мера схожести двух объектов относительно некоторого третьего объекта. Эта функция позволяет не просто сказать, похожи объекты друг на друга или нет, но и уточнить ответ на вопрос «по сравнению с чем?». Это позволяет большее количество факторов при классификации.
+
+Пусть дано некоторое множество объектов М с заданной метрикой ρ(a, b). Функция конкурентного сходства объектов a, b ∈ M относительно x ∈ M задается так:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris.png)
+
+Реализацтя функции
+
+```R
+firis <- function(a,u,b){
+	S <- (dis(a,b)-dis(a,u))/(dis(a,b)+dis(a,u))
+	return(S)
+}
+
+```
+
+### Пример
+
+Пусть даны 2 класса объектов (красные и зелёные). Нужно определить к какому классу отнести черный квадрат
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_stolp.png)
+
+Квадрат ближе находится к объектам зелёного класса, но судя по структуре он принадлежит объектам из красного класса. Рассмотрим результат работы при помощи Fris функции и без неё
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_stolp1.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_stolp2.png)
+
+Другим применением FRiS-функции является один из алгоритмов отбора эталонных образцов для метрического классификатора, именуемый FRiS-STOLP.
+
+Рассмотрим алгоритм
+Пусть дана обучающая выборка ,![raspr](http://www.machinelearning.ru/mimetex/?X^l=(x_i,%20y_i)_{i=1}^l) где ![raspr](http://www.machinelearning.ru/mimetex/?x_i) - объекты, ![raspr](http://www.machinelearning.ru/mimetex/?y_i=y^*(x_i))  - классы, которым принадлежат эти объекты. 
+
+Опишем две вспомогательные функции:
+
+NN(u,U) – возвращает ближайший к u объект из множества U.
+![raspr](http://www.machinelearning.ru/mimetex/?FindEtalon(X_y;\Omega)) – исходя из набора уже имеющихся эталонов ![raspr](http://www.machinelearning.ru/mimetex/?\Omega) и набора ![raspr](http://www.machinelearning.ru/mimetex/?X_y) элементов класса Y, возвращает новый эталон для класса Y
+
+Для каждого объекта  ![raspr](http://www.machinelearning.ru/mimetex/?x%20\in%20X_y) вычисляются две характеристики:
+
+ - обороноспособность объекта x:  
+
+![raspr](http://www.machinelearning.ru/mimetex/?D_x%20=%20\frac{1}{\left|%20X_y%20\right|%20-1}\sum_{u%20\in%20X_y%20\setminus%20x}S%20\left(u,x%20|%20NN(u,\Omega)%20\right))
+ - толерантность объекта x (количественная оценка, насколько объект x в роли эталона класса y не мешает эталонам других классов): 
+
+![raspr](http://www.machinelearning.ru/mimetex/?T_x%20=%20\frac{1}{\left|%20X^l%20\setminus%20X_y%20\right|}\left(\sum_{v%20\in%20X^l%20\setminus%20X_y}S%20\left(v,x%20|%20NN(v,\Omega)%20\right)\right))
+
+На основании полученных характеристик вычисляется эффективность объекта x
+
+![raspr](http://www.machinelearning.ru/mimetex/?E_x%20=%20\lambda%20D_x%20+%20(1-\lambda)%20T_x)
+
+
+ Функция FindEtalon возвращает объект ![raspr](http://www.machinelearning.ru/mimetex/?x%20\in%20X^l) с максимальной эффективностью ![raspr](http://www.machinelearning.ru/mimetex/?E_x)
+
+![raspr](http://www.machinelearning.ru/mimetex/?x:=arg\max_{x%20\in%20X_y}{E_x})
+
+Параметр ![raspr](http://www.machinelearning.ru/mimetex/?\lambda%20\in%20[0,1]))
+
+
+Сам алгоритм FRiS-STOLP состоит из следующих шагов:
+
+1. Инициализировать начальные множества эталонов. Для всех классов  y ∈ Y
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_5.png)
+
+2. Инициализировать искомые множества эталонов. Для всех классов  y ∈ Y
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_6.png)
+
+3. Повторять пункты 4-6, пока множество рассматриваемых объектов непусто ![raspr](http://www.machinelearning.ru/mimetex/?\left(%20X^l%20\not=%20\emptyset%20\right))
+
+4. Сформировать множество U правильно классифицированных объектов:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_7.png)
+
+5. Удалить правильно классифицированные объекты из дальнейшего рассмотрения: 
+   -  из множеств эталонов: для каждого ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_8.png)
+    -  из обучающей выборки:
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_9.png)
+
+6. Добавить новый эталон для каждого класса y ∈ Y
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_10.png)
+
+7. Вернуть искомые множества эталонов ![raspr](http://www.machinelearning.ru/mimetex/?\Omega_Y) для каждого класса y ∈ Y
+
+
+### Результат работы алгоритма FRIS STOLP:
+
+ Множество эталонов :
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_Etalone.png)
+
+
+Карта классификация : 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/map_frisstolp.png)
+
+### Преимущества:
+
+- Высокий уровень классификации
+- При имеющих Эталонов быстрая классификация 
+
+### Недостатки
+
+- Сложная реализация
+- Долгое нахождение Эталонов
