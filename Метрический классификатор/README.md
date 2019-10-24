@@ -14,7 +14,7 @@
 Метод ближайших соседей (1NN). Относит классифицируемый объект к тому классу , к которому принадлежит его ближайший сосед 
 
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/1.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/1.png) 
 
 
 
@@ -56,7 +56,7 @@ orderedXl <- xl[order(distances[, 2]), ]
 
 Применим метод 1NN и получим , что Z принадлежит классу "красных кружочков" 
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/2.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/2.png) 
 
 ## **Преимущества** 
 
@@ -89,7 +89,7 @@ orderedXl <- xl[order(distances[, 2]), ]
 
 Функция **W~y~=(z,X^l^,k)=w~y~(z,x~z,1~,...,x~z,k~)** - определяет степень принадлежности объекта x классу y 
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/4.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/4.png) 
 
 x~z,j~ - j-ый по близости к объекту z 
 
@@ -119,8 +119,8 @@ return (class)
 } 
 
 ``` 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Looknn.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/3.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/Looknn.png) 
 
 ## Преимущества 
 
@@ -138,8 +138,8 @@ return (class)
 ---
 Метод k-взвешенных ближайших соседей (KWNN). Имеется объект u , необходимо определить к какому классу он относится. 
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/kwnn.png) 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/kwnn1.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/kwnn.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/kwnn1.png) 
 
 ### Алгоритм
 
@@ -147,11 +147,11 @@ return (class)
 2. Находим среднее расстояния до k ближайших объектов.
 3. Выбираем класс с наименьшим расстоянием и относим объект u к этому классу.
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/3.png) 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/6.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/3.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/6.png)
 
 Найдём оптимальное q для алгоритма kwnn с помощью Loo, при k=6
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/7.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/7.png)
 
 Оптимальное q при k=6 - это q=1
 **Реализация KWNN:**
@@ -187,8 +187,8 @@ kwNN <- function(xl, z, k, q)
 ---
 KWNN отличается от KNN тем , что учитывает ранг соседей от классифицируемого объекта, тем самым уменьшая шанс ошибиться .
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/7kwnn.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/7knn.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/7kwnn.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/7knn.png)
 
 ## Метод скользящего контроля (LOO):
 ---
@@ -204,7 +204,7 @@ KWNN отличается от KNN тем , что учитывает ранг �
 
 6.Проделываем для всех k, ответом будет k с наименьшей ошибкой.
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Looknn.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/Looknn.png) 
 
 ## Реализация метода Loo:
 
@@ -229,23 +229,23 @@ Loo <- function(k,xl)
 # Метод парзеновского окна
 
 Рассмотрим весовую функция 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо2.png)  как функцию не от ранга соседа, а как функция от расстояния ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/мпо2.png)  как функцию не от ранга соседа, а как функция от расстояния ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/мпо.png) 
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо1.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/мпо1.png)
 ,где K - невозрастающая и неотрицательная функция ядра  
 В этом случае метрический классификатор:
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпо3.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/мпо3.png) 
 
 h - шириной окна , u - играет ту же роль, что и число соседей. "Окно" - это сферическая окрестность u радиуса h, при попадании в которою облегающий объект xi голосует за отнесение объекта u к классу yi
 
 Рассмотрим формулы всех ядер:
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/мпоф.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/мпоф.png)
 
 ## Ядро Епонечникова
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_epan.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_epan.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/Loo_epan.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/map_epan.png)
  
 Реализация функции
 ```
@@ -261,8 +261,8 @@ epan <- function(r,h){
 
 ## Ядро Прямоугольное
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_rect.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_rect.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/Loo_rect.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/map_rect.png)
  
 Реализация функции
 ```
@@ -277,8 +277,8 @@ rectangle <- function(r,h){
 ```
 ## Ядро Треугольное
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_trey.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_trey.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/Loo_trey.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/map_trey.png)
 
 Реализация функции
 ```
@@ -293,8 +293,8 @@ trey <- function(r,h){
 ```
 ## Ядро Квадратное
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_kvad.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_kvad.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/Loo_kvad.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/map_kvad.png)
  
 Реализация функции
 ```
@@ -310,8 +310,8 @@ kvad <- function(r,h){
 ```
 ## Ядро Гаусса
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/Loo_gaus.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/map_gaus.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/Loo_gaus.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/map_gaus.png)
  
 Реализация функции
 ```
@@ -336,7 +336,7 @@ gaus <- function(r,h){
 # Метод Потенциальных функций
 ---
 Если в методе Парзеновского окна, центр окна поместить в классифицируемый объект, то получим метод Потенциальных функций.
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/pf1.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/pf1.png)
 
 Реализация потенциальной функции:
 
@@ -418,8 +418,8 @@ return(pots)
 ```
 Результат работы алгоритма для Гауссовского ядра, при h=1
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/poten_func.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/pf_map.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/poten_func.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/pf_map.png)
 
 Список потенциалов:
 
@@ -448,7 +448,7 @@ return(pots)
 ## Алгоритм STOLP
 
 Отступ - величина, показывающая, степень типичности объекта к классу. Отступ равен разности между степенью близости объекта к своему классу и максимальной близостью объекта к в другому классу. Отступ отрицателен, тогда и только тогда, когда алгоритм допускает ошибку на данном объекте.
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/margin.png) 
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/margin.png) 
 
 Объекты по отступам делятся на виды:
 
@@ -483,8 +483,8 @@ margin <- function(xl,classes,z,class){
 ```
 Осталось 5 эталонных объектов. Скорость работы метода после алгоритма заметно улучшилась,а именно с 29 mins до 1 mins.
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/STOLP.png)
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/img/stolp_map.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/STOLP.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/Метрический%20классификатор/img/stolp_map.png)
 
 Отступы для Парзеновского окна:
 
