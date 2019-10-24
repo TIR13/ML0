@@ -31,7 +31,7 @@ NN <- function(u,U){
 
 
 
-findiris <- function(a,u,b){
+firis <- function(a,u,b){
 	S <- (dis(a,b)-dis(a,u))/(dis(a,b)+dis(a,u))
 	
 	return(S)
@@ -56,10 +56,10 @@ FindEtalon <- function(xl,xy,Etalone){
 		
 		for (j in 1:nn){
 			if(xy[i,3]==xl[j,3] & xy[i,1]!=xl[j,1] & xy[i,2]!=xl[j,2]){
-				sum1 <- sum1+findiris(xl[j,1:2],x[i,],NN(xl[j,1:2],Etalone))
+				sum1 <- sum1+firis(xl[j,1:2],x[i,],NN(xl[j,1:2],Etalone))
 			}
 			if(xy[i,3]!=xl[j,3] & xy[i,1]!=xl[j,1] & xy[i,2]!=xl[j,2]){
-				sum2 <- sum2+findiris(xl[j,1:2],x[i,],NN(xl[j,1:2],Etalone))
+				sum2 <- sum2+firis(xl[j,1:2],x[i,],NN(xl[j,1:2],Etalone))
 			}
 		}
 		Dx <- sum1/(n-1)
@@ -117,7 +117,7 @@ frisstolp <- function(xxl){
 					m1 <- NN(x[i,],Etalone[which(Etalone[,3]==xl[i,3]),1:3])
 					m2 <- NN(x[i,],Etalone[which(Etalone[,3]!=xl[i,3]),1:3])
 					print(x[k,])
-					margin <- findiris(x[k,],m1,m2)
+					margin <- firis(x[k,],m1,m2)
 		
 					if(margin>0.5){
 						U <- rbind(U,xl[i,])
