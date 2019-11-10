@@ -34,7 +34,16 @@
 3. ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/3b.gif) - Априорная вероятность, т.е. вероятность появления класса.
 
 ### Наивный байесовский классификатор
-Будем полагать, что все объекты описываются n числовыми признаками. Обозначим через ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/5b.gif) произвольный элемент пространства объектов ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/6b.gif). Предположим, что все признаки ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/9b.gif). являются независимыми случайными величинами. Следовательно, функции правдоподобия классов представимы в виде, ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/7b.gif). где ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/8b.gif). - плотность распределений значений jго признака для класса y. Оценивать n одномерных плотностей гораздо проще, чем одну n-мерную плотность. Однако данное предположение крайне редко работает на практике, поэтому алгоритмы, использующий его, называют наивным байесовким методом. 
+
+Будем полагать, что все объекты описываются n числовыми признаками. Обозначим через ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/5b.gif) произвольный элемент пространства объектов ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/6b.gif). Предположим, что все признаки ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/9b.gif). являются независимыми случайными величинами. Следовательно, функции правдоподобия классов представимы в виде, 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/7b.gif). где ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/8b.gif). - плотность распределений значений jго признака для класса y. 
+
+Оценивать n одномерных плотностей гораздо проще, чем одну n-мерную плотность. Однако данное предположение крайне редко работает на практике, поэтому алгоритмы, использующий его, называют наивным байесовким методом. 
+
+Решающее правило принимает вид:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/naivv.gif)
 
 ### Пример
 Имеется выборка 
