@@ -1,3 +1,5 @@
+objectCounter <- 500
+
 naiv <- function(x, mu, sigma, lamda, P){
 	n <- 2
 	res <- log(lamda*P)
