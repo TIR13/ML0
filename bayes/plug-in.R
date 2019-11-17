@@ -2,50 +2,57 @@ library(MASS)
 
 get_mu <- function(xl)
 {
-  m <- dim(xl)[2]
-  mu <- matrix(NA, 1, m)
-  for(i in 1:m)
-  {
-    mu[1,i] <- mean(xl[,i])
-  }
-  return(mu)
+
+	m <- dim(xl)[2]
+	mu <- matrix(NA, 1, m)
+	
+	for(i in 1:m)
+	{
+		mu[1,i] <- mean(xl[,i])
+	}
+	
+	return(mu)
+	
 }
 
 get_matrix <- function(xl,mu)
 {
-  n <- dim(xl)[1]
-  m <- dim(xl)[2]
-  sigma <- matrix(0, m, m)
-  for(i in 1:n)
-  {
-    
-    sigma <- sigma + (t(xl[i,]-mu) %*% (xl[i,]-mu))
-    
-  }
-  return(sigma/(n-1))
+
+	n <- dim(xl)[1]
+	m <- dim(xl)[2]
+	sigma <- matrix(0, m, m)
+	
+	for(i in 1:n)
+	{
+		sigma <- sigma + (t(xl[i,]-mu) %*% (xl[i,]-mu))
+	}
+	
+	return(sigma/(n-1))
+
 }
 
 coef <- function(mu1,mu2,sigma1,sigma2)
 {
-  
-  invsigma1 <- solve(sigma1)
-  invsigma2 <- solve(sigma2)
-
-  a <- invsigma1 - invsigma2
-  A <- a[1,1]
-  B <- a[2,2]
-  C <- 2*a[1,2]
-  
-  b <- invsigma1%*%t(mu1) - invsigma2%*%t(mu2)
-  D <- -2*b[1,1]
-  E <- -2*b[2,1]
-  
-  F <- c(log(det(sigma1)) - log(det(sigma2)) + mu1%*%invsigma1%*%t(mu1) - mu2%*%invsigma2%*%t(mu2))
-
-  func <- function(x, y) {
-    x^2*A + y^2*B + x*y*C + x*D + y*E + F
-  }
-  return(func)
+	  
+	invsigma1 <- solve(sigma1)
+	invsigma2 <- solve(sigma2)
+	a <- invsigma1 - invsigma2
+	A <- a[1,1]
+	B <- a[2,2]
+	C <- 2*a[1,2]
+	
+	b <- invsigma1%*%t(mu1) - invsigma2%*%t(mu2)
+	
+	D <- -2*b[1,1]
+	E <- -2*b[2,1]
+	F <- c(log(det(sigma1)) - log(det(sigma2)) + mu1%*%invsigma1%*%t(mu1) - mu2%*%invsigma2%*%t(mu2))
+	
+	func <- function(x, y) {
+		x^2*A + y^2*B + x*y*C + x*D + y*E + F
+	}
+	
+	return(func)
+	
 }
 
 
