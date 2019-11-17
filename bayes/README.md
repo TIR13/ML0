@@ -1,6 +1,7 @@
 # Байесовские алгоритмы классификации
 - [Линии уровня нормального распределения](#Линии-уровня-нормального-распределения)
 - [Наивный байесовский классификатор](#Наивный-байесовский-классификатор)
+- [Plug-in алгоритм](#Plug-in-алгоритм)
 ---
 ## Линии уровня нормального распределения
 Вероятностное распределение с плотностью ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/tex.png) 
@@ -127,3 +128,108 @@ naiv <- function(x, mu, sigma, lamda, P){
 ### Минусы:
 
 В общем случае - низкое качество классификации
+
+## Plug-in алгоритм
+
+Если восстанавливать параметры нормального распределения ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/muinr.png), ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/sigmainr.png)  для каждого класса и подставляя в формулу оптимального байесовского классификатора восстановленные плотности, получим подстановочный (plug-in) алгоритм классификации. Параметры нормального распределения оценивают согласно принципа максимума правдоподобия:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/plug_in.png)
+
+Разделяющая поверхность между двумя классами s и t задаётся следующим образом:
+
+![raspr](https://camo.githubusercontent.com/55e2315c9f2b500bd677580e4eba7a90990bbee3/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f5c6c616d6264615f73505f735c72686f5f732878292673706163653b3d2673706163653b5c6c616d6264615f74505f745c72686f5f74287829)
+
+Прологарифмируя обе части выражения и проведя преобразования получим уровнение разделяющей поверхности.
+
+Реализация:
+
+```R
+get_mu <- function(xl)
+{
+
+	m <- dim(xl)[2]
+	mu <- matrix(NA, 1, m)
+	
+	for(i in 1:m)
+	{
+		mu[1,i] <- mean(xl[,i])
+	}
+	
+	return(mu)
+	
+}
+
+get_matrix <- function(xl,mu)
+{
+
+	n <- dim(xl)[1]
+	m <- dim(xl)[2]
+	sigma <- matrix(0, m, m)
+	
+	for(i in 1:n)
+	{
+		sigma <- sigma + (t(xl[i,]-mu) %*% (xl[i,]-mu))
+	}
+	
+	return(sigma/(n-1))
+
+}
+
+coef <- function(mu1,mu2,sigma1,sigma2)
+{
+	  
+	invsigma1 <- solve(sigma1)
+	invsigma2 <- solve(sigma2)
+	a <- invsigma1 - invsigma2
+	A <- a[1,1]
+	B <- a[2,2]
+	C <- 2*a[1,2]
+	
+	b <- invsigma1%*%t(mu1) - invsigma2%*%t(mu2)
+	
+	D <- -2*b[1,1]
+	E <- -2*b[2,1]
+	F <- c(log(det(sigma1)) - log(det(sigma2)) + mu1%*%invsigma1%*%t(mu1) - mu2%*%invsigma2%*%t(mu2))
+	
+	func <- function(x, y) {
+		x^2*A + y^2*B + x*y*C + x*D + y*E + F
+	}
+	
+	return(func)
+	
+}
+
+
+```
+
+## Пример работы
+
+### Линия
+
+Для мат ожидания в точке (5;5) и (15;15) с матрицей (1,0,0,1) и (1,0,0,1)
+
+```
+mu1:
+4.890255 5.012199
+
+mu2:
+15.0881 15.10856
+
+sigma1:
+0.76108872 0.05076374
+0.05076374 1.25389165
+
+sigma2:
+ 0.950205993 -0.004565248
+-0.004565248  1.074333608
+```
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pl_3.png)
+
+### Эллипс
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pl_1.png)
+
+### Гипербола 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pl_2.png)
+
