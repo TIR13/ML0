@@ -232,3 +232,50 @@ sigma2:
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pl_2.png)
 
+## Линейный Дискриминант Фишера
+---
+
+Теперь рассмотрим линейный дискриминант Фишера (ЛДФ), который, в отличии от подстановочного алгоритма, при построении предполагает, что ковариационные матрицы классов равны, и для их восстановления нужно использовать все объекты обучающей выборки.
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf1.png)
+
+Реализация восстановления матрицы
+
+```R
+get_matrix <- function(xl1,xl2,mu1,mu2)
+{
+
+	n <- dim(xl1)[1]
+	m <- dim(xl2)[1]
+	nm <- n+m
+	col <- dim(xl1)[2]
+	sigma <- matrix(0, col, col)
+	for(i in 1:n)
+	{
+		sigma <- sigma + (t(xl1[i,]-mu1) %*% (xl1[i,]-mu1))
+	}
+
+	for(i in 1:m)
+	{
+		sigma <- sigma + (t(xl2[i,]-mu2) %*% (xl2[i,]-mu2))
+	}
+	return(sigma/(nm+2))
+}
+```
+
+### Пример
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf.png)
+
+Для мат ожидания в точке (1;0) и (15;0) с матрицей (2,0,0,2)
+
+```
+mu1:
+0.9304235 -0.06200572
+
+mu2:
+15.06322 -0.1762103
+
+sigma:
+1.953001883 -0.001501422
+-0.001501422  1.83128977965
+```
