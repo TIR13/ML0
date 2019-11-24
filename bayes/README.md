@@ -138,6 +138,7 @@ naiv <- function(x, mu, sigma, lamda, P){
 ![raspr](https://camo.githubusercontent.com/55e2315c9f2b500bd677580e4eba7a90990bbee3/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f5c6c616d6264615f73505f735c72686f5f732878292673706163653b3d2673706163653b5c6c616d6264615f74505f745c72686f5f74287829)
 
 Прологарифмируя обе части выражения и проведя преобразования получим уровнение разделяющей поверхности.
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/plugin.gif)
 
 Реализация:
 
