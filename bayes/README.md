@@ -204,6 +204,10 @@ coef <- function(mu1,mu2,sigma1,sigma2)
 
 ## Пример работы
 
+Классификация при помощи подстановочного алгоритма:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pluginn.png)
+
 ### Линия
 
 Для мат ожидания в точке (5;5) и (15;15) с матрицей (1,0,0,1) и (1,0,0,1)
