@@ -268,6 +268,9 @@ get_matrix <- function(xl1,xl2,mu1,mu2)
 ```
 
 ### Пример
+Классификация 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf_klass.png) 
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf.png)
 
