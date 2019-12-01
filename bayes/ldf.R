@@ -36,6 +36,32 @@ get_matrix <- function(xl1,xl2,mu1,mu2)
 
 }
 
+get_coef <- function(mu1,mu2,sigma1,sigma2)
+{
+	determ1 <-det(sigma1)
+  	determ2 <-det(sigma2)
+	  
+	a <- c(sigma1[2,2]/determ1,sigma2[2,2]/determ2)
+  	b <- c(-sigma1[2,1]/determ1,-sigma2[2,1]/determ2)
+  	c <- c(-sigma1[1,2]/determ1,-sigma2[1,2]/determ2)
+  	d <- c(sigma1[1,1]/determ1,sigma2[1,1]/determ2)
+
+
+  	D <- -2*mu1[1]*a[1]-2*mu1[2]*b[1]-mu1[1]*c[1]+2*mu2[1]*a[2]+b[2]*mu2[1]+mu2[2]*c[2]
+  	E <- -mu1[1]*b[1]-mu1[1]*c[1]-d[1]*2*mu1[2]+b[2]*mu2[1]+c[2]*mu2[1]+2*mu2[2]*d[2]
+	F <-  -log(abs(determ1)) + log(abs(determ2)) + 
+		mu1[1]*mu1[1]*a[1]+(b[1]+c[1])*mu1[1]*mu1[2]+d[1]*mu1[2]*mu1[2]-
+		mu2[1]*mu2[1]*a[2]-(b[2]+c[2])*mu2[1]*mu2[2]-d[2]*mu2[2]*mu2[2]
+	
+	func <- function(x, y) {
+		x*D + y*E + F
+	}
+	
+	return(func)
+	
+}
+
+
 c <- 200
 sigma1 <- matrix(c(2, 0, 0, 2), 2, 2)
 sigma2 <- matrix(c(2, 0, 0, 2), 2, 2)
@@ -56,7 +82,17 @@ second <- xl[xl[,3] == 2, 1:2]
 mu1 <- get_mu(first)
 mu2 <- get_mu(second)
 sigma <- get_matrix(first,second,mu1,mu2)
-a <- solve(sigma) %*% t(mu1-mu2)
-b <- ((mu1+mu2)/2) %*% a
 
-abline(b / a[2,1], -a[1,1]/a[2,1], col = "red", lwd = 3) 
+f <- get_coef(mu1,mu2,sigma,sigma)
+x <- y <- seq(-10, 20, len = 100)
+z <- outer(x, y, f)
+contour(x, y, z, levels = 0, drawlabels = FALSE, lwd = 2.5, col = "red", add = TRUE)
+
+l  <-  c(9,0)
+otv <- outer(l[1],l[2],f)
+class <- 2
+if(otv<0) {
+	class <- 1
+}
+
+points(l[1],l[2],pch = 21, col=colors[class], asp = 1)
