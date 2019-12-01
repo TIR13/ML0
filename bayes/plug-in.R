@@ -90,3 +90,11 @@ x <- y <- seq(-10, 20, len = 100)
 z <- outer(x, y, f)
 contour(x, y, z, levels = 0, drawlabels = FALSE, lwd = 2.5, col = "green", add = TRUE)
 
+l  <-  c(7,0)
+otv <- outer(l[1],l[2],f)
+class <- 2
+if(otv<0) {
+	class <- 1
+}
+
+points(l[1],l[2],pch = 21, col=colors[class], asp = 1)
