@@ -508,10 +508,10 @@ firis <- function(a,u,b){
 
 ### Пример
 
-Рассмотрим карту классификации при помощи Fris-функции. Можно заметить, что объекты классифицируется учитывая "типичность" класса.
+Рассмотрим классификацию при помощи Fris-функции. Можно заметить, что объекты классифицируется учитывая "типичность" класса.
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/map_fris.png)
-
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_m.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/metrica/img/fris_f.png)
 
 
 Другим применением FRiS-функции является один из алгоритмов отбора эталонных образцов для метрического классификатора, именуемый FRiS-STOLP.
