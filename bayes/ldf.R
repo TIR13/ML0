@@ -70,43 +70,46 @@ xl <- rbind(cbind(xy1, 1), cbind(xy2, 2))
 
 colors <- c("gray", "orange")
 plot(xl[,1], xl[,2], pch = 21, bg = colors[xl[,3]], asp = 1, main = "Линейный дискриминант Фишера")
-
-classif <- function(xl,l,classes,lamda,P){
-
-m <- length(classes)
 first <- xl[xl[,3] == 1, 1:2]
 second <- xl[xl[,3] == 2, 1:2]
 
 mu1 <- get_mu(first)
 mu2 <- get_mu(second)
+mu <- rbind(mu1,mu2)
 sigma <- get_matrix(first,second,mu1,mu2)
 
 f <- get_coef(mu1,mu2,sigma,sigma)
 x <- y <- seq(-10, 20, len = 100)
 z <- outer(x, y, f)
-contour(x, y, z, levels = 0, drawlabels = FALSE, lwd = 2.5, col = "red", add = TRUE)
 
-max  <- -100000 
-class <- "unknown"
-for(i in 1:m){
- k <- log(lamda*P)-0.5*t(mu[i,]) %*% solve(sigma) %*% mu[i,]+t(l) %*% solve(sigma) %*% mu[i,]
- if( k > max ){
-	max <- k
-	class <- classes[i]
-}
-}
-return(class)
+contour(x, y, z, levels = 0, drawlabels = FALSE, lwd = 2.5, col = "red", add = TRUE)
+	
+
+classif <- function(l,sigma,mu,classes,lamda,P){
+
+	m <- length(classes)
+	max  <- -100000 
+	class <- "unknown"
+	for(i in 1:m){
+		k <- log(lamda*P)-0.5*t(mu[i,]) %*% solve(sigma) %*% mu[i,]+t(l) %*% solve(sigma) %*% mu[i,]
+		
+		if( k > max ){
+			max <- k
+			class <- classes[i]
+		}
+	}
+	return(class)
 }
 
 l  <-  c(9,0)
 
-class <- classif(xl,l,colors,1,0.5)
-points(l[1],l[2],pch = 21, col=colors[class], asp = 1)
+class <- classif(l,sigma,mu,colors,1,0.5)
+points(l[1],l[2],pch = 21, col=class, asp = 1)
 
 for(i in seq(-3,20,1)){
-for(j in seq(-10,10,1)){
-l<-c(i,j)
-class <- classif(xl,l,colors,1,0.5)
-points(l[1],l[2],pch = 21, col=class, asp = 1)
+	for(j in seq(-10,10,1)){
+		l<-c(i,j)
+		class <- classif(l,sigma,mu,colors,1,0.5)
+		points(l[1],l[2],pch = 21, col=class, asp = 1)
 }
 }

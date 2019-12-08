@@ -76,40 +76,41 @@ xl <- rbind(cbind(xy1, 1), cbind(xy2, 2))
 colors <- c("gray", "orange")
 plot(xl[ , 1], xl[ , 2], pch = 21, bg = colors[xl[ ,3]], asp = 1, xlab = "x", ylab = "y")
 
-classif <- function(l,xl,classes,lamda,P){
-m <- length(classes)
-n <- dim(xl)[1]
 # Оценивание
 first <- xl[xl[,3] == 1,1:2]
 second <- xl[xl[,3] == 2,1:2]
 mu1 <- get_mu(first)
 mu2 <- get_mu(second)
 mu <- rbind(mu1,mu2)
+
 sigma1 <- get_matrix(first, mu1)
 sigma2 <- get_matrix(second, mu2)
 sigma <- rbind(sigma1,sigma2)
-f <- get_coef(mu1,mu2,sigma1,sigma2)
 
-# Рисуем дискриминантую функцию
+f <- get_coef(mu1,mu2,sigma1,sigma2)
 x <- y <- seq(-10, 20, len = 100)
 z <- outer(x, y, f)
 contour(x, y, z, levels = 0, drawlabels = FALSE, lwd = 2.5, col = "green", add = TRUE)
-max  <- -100000 
-class <- "unknown"
-for(i in 1:m){
- k <- log(lamda*P)-0.5*t(l-mu[i,]) %*% solve(sigma[(2*i-1):(2*i),1:2]) %*% (l-mu[i,])-0.5*log(abs(det(sigma[(2*i-1):(2*i),1:2])))
-print(0.5*t(l-mu[i]) %*% solve(sigma[(2*i-1):(2*i),1:2]))
 
- if( k > max ){
-	max <- k
-	class <- classes[i]
-}
-}
-return(class)
+classif <- function(l,sigma,mu,classes,lamda,P){
+
+	m <- length(classes)
+	max  <- -100000 
+	class <- "unknown"
+	
+	for(i in 1:m){
+		k <- log(lamda*P)-0.5*t(l-mu[i,]) %*% solve(sigma[(2*i-1):(2*i),1:2]) %*% (l-mu[i,])-0.5*log(abs(det(sigma[(2*i-1):(2*i),1:2])))
+		
+		if(k > max){
+			max <- k
+			class <- classes[i]
+		}
+	}
+	
+	return(class)
 }
 l <- c(10,0)
 
-class <- classif(c(10,0),xl,colors,1,0.5)
+class <- classif(c(10,0),sigma,mu,colors,1,0.5)
 
-
-points(l[1],l[2],pch = 21, col=colors[class], asp = 1)
+points(l[1],l[2],pch = 21, col=class, asp = 1)

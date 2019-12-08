@@ -55,8 +55,6 @@ get_coef <- function(mu1,mu2,sigma1,sigma2)
   return(func)
 }
 
-n <- 150
-
 xl <- iris[,3:5]
 
 # Рисуем обучающую выборку
@@ -71,51 +69,41 @@ fs <- xl[xl[,3] == "virginica",1:2]
 mu1 <- get_mu(f)
 mu2 <- get_mu(s)
 mu3 <- get_mu(fs)
+
 sigma1 <- get_matrix(f, mu1)
 sigma2 <- get_matrix(s, mu2)
 sigma3 <- get_matrix(fs, mu3)
-func <- get_coef(mu1,mu3,sigma1,sigma3)
 
-classif <- function(l,xl,classes,lamda=1,P=0.5){
-
-m <- length(classes)
-n <- dim(xl)[1]
-# Оценивание
-f <- xl[xl[,3] == "setosa",1:2]
-s <- xl[xl[,3] == "versicolor",1:2]
-fs <- xl[xl[,3] == "virginica",1:2]
-mu1 <- get_mu(f)
-mu2 <- get_mu(s)
-mu3 <- get_mu(fs)
-sigma1 <- get_matrix(f, mu1)
-sigma2 <- get_matrix(s, mu2)
-sigma3 <- get_matrix(fs, mu3)
 mu <- rbind(mu1,mu2,mu3)
 sigma <- rbind(sigma1,sigma2,sigma3)
-f <- get_coef(mu1,mu2,sigma1,sigma2)
 
-max  <- -100000 
-class <- "unknown"
-for(i in 1:m){
- k <- log(lamda*P)-0.5*t(l-mu[i,]) %*% solve(sigma[(2*i-1):(2*i),1:2]) %*% (l-mu[i,])-0.5*log(abs(det(sigma[(2*i-1):(2*i),1:2])))
 
- if( k > max ){
-	max <- k
-	class <- classes[i]
-}
-}
-return(class)
+classif <- function(l,sigma,mu,classes,lamda=1,P=0.5){
+	
+	m <- length(classes)
+	max  <- -100000 
+	class <- "unknown"
+	for(i in 1:m){
+		k <- log(lamda*P)-0.5*t(l-mu[i,]) %*% solve(sigma[(2*i-1):(2*i),1:2]) %*% (l-mu[i,])-0.5*log(abs(det(sigma[(2*i-1):(2*i),1:2])))
+	
+		if( k > max ){
+			max <- k
+			class <- classes[i]
+		}
+	}
+	return(class)
 }
 
 for(i in seq(0,8,0.1)){
-for(j in seq(0,2.5,0.1)){
-l<-c(i,j)
-class <- classif(l,iris[,3:5],colors)
-points(l[1],l[2],pch = 21, col=class, asp = 1)
-}
+	for(j in seq(0,2.5,0.1)){
+		l<-c(i,j)
+		class <- classif(l,sigma,mu,colors)
+		points(l[1],l[2],pch = 21, col=class, asp = 1)
+	}
 }
 
 
+func <- get_coef(mu1,mu3,sigma1,sigma3)
 # Рисуем дискриминантую функцию
 y <- seq(0, 3, len = 100)
 x <- seq(0, 8, len = 100)
@@ -212,48 +200,39 @@ colors <- c("setosa" = "red", "versicolor" = "green3","virginica" = "blue")
 
 plot(iris[, 3:4], pch = 21, bg = colors[iris$Species],col = colors[iris$Species])
 
-
-first <- xl[xl[,3] == "setosa", 1:2]
-second <- xl[xl[,3] == "versicolor", 1:2]
-fs <- xl[xl[,3] == "virginica", 1:2]
-
-mu1 <- get_mu(first)
-mu2 <- get_mu(second)
-mu3 <- get_mu(fs)
-
-sigma <- get_matrix(first,second,fs,mu1,mu2,mu3)
-
-classif <- function(l,xl,classes,lamda=1,P=0.5){
-
-m <- length(classes)
-n <- dim(xl)[1]
 # Оценивание
 f <- xl[xl[,3] == "setosa",1:2]
 s <- xl[xl[,3] == "versicolor",1:2]
 fs <- xl[xl[,3] == "virginica",1:2]
+
 mu1 <- get_mu(f)
 mu2 <- get_mu(s)
 mu3 <- get_mu(fs)
+
 sigma <- get_matrix(f,s,fs,mu1,mu2,mu3)
 mu <- rbind(mu1,mu2,mu3)
-max  <- -100000 
-class <- "unknown"
-for(i in 1:m){
- k <- log(lamda*P)-0.5*t(mu[i,]) %*% solve(sigma) %*% mu[i,]+t(l) %*% solve(sigma) %*% mu[i,]
- if( k > max ){
-	max <- k
-	class <- classes[i]
-}
-}
-return(class)
+
+classif <- function(l,sigma,mu,classes,lamda=1,P=0.5){
+	
+	m <- length(classes)
+	max  <- -100000 
+	class <- "unknown"
+	for(i in 1:m){
+		k <- log(lamda*P)-0.5*t(mu[i,]) %*% solve(sigma) %*% mu[i,]+t(l) %*% solve(sigma) %*% mu[i,]
+		if( k > max ){
+			max <- k
+			class <- classes[i]
+		}
+	}
+	return(class)
 }
 
 for(i in seq(0,8,0.1)){
-for(j in seq(0,2.5,0.1)){
-l<-c(i,j)
-class <- classif(l,iris[,3:5],colors)
-points(l[1],l[2],pch = 21, col=class, asp = 1)
-}
+	for(j in seq(0,2.5,0.1)){
+		l<-c(i,j)
+		class <- classif(l,sigma,mu,colors)
+		points(l[1],l[2],pch = 21, col=class, asp = 1)
+	}
 }
 
 f <- get_coef(mu1,mu3,sigma,sigma)
