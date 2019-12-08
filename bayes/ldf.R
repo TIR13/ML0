@@ -38,27 +38,22 @@ get_matrix <- function(xl1,xl2,mu1,mu2)
 
 get_coef <- function(mu1,mu2,sigma1,sigma2)
 {
-	determ1 <-det(sigma1)
-  	determ2 <-det(sigma2)
-	  
-	a <- c(sigma1[2,2]/determ1,sigma2[2,2]/determ2)
-  	b <- c(-sigma1[2,1]/determ1,-sigma2[2,1]/determ2)
-  	c <- c(-sigma1[1,2]/determ1,-sigma2[1,2]/determ2)
-  	d <- c(sigma1[1,1]/determ1,sigma2[1,1]/determ2)
-
-
-  	D <- -2*mu1[1]*a[1]-2*mu1[2]*b[1]-mu1[1]*c[1]+2*mu2[1]*a[2]+b[2]*mu2[1]+mu2[2]*c[2]
-  	E <- -mu1[1]*b[1]-mu1[1]*c[1]-d[1]*2*mu1[2]+b[2]*mu2[1]+c[2]*mu2[1]+2*mu2[2]*d[2]
-	F <-  -log(abs(determ1)) + log(abs(determ2)) + 
-		mu1[1]*mu1[1]*a[1]+(b[1]+c[1])*mu1[1]*mu1[2]+d[1]*mu1[2]*mu1[2]-
-		mu2[1]*mu2[1]*a[2]-(b[2]+c[2])*mu2[1]*mu2[2]-d[2]*mu2[2]*mu2[2]
-	
-	func <- function(x, y) {
-		x*D + y*E + F
-	}
-	
+	d1 <- det(sigma1)
+  	d2 <- det(sigma2)
+  	invs1 <- solve(sigma1)
+  	invs2 <- solve(sigma2)
+  
+  	a <- invs1 - invs2
+  	b <- invs1 %*% t(mu1) - invs2 %*% t(mu2)
+  
+ 	D <- -2 * b[1, 1] # x
+  	E <- -2 * b[2, 1] # y
+  	G <- c(mu1 %*% invs1 %*% t(mu1) - mu2 %*% invs2 %*% t(mu2)) + log(abs(det(sigma1))) - log(abs(det(sigma2)))
+  
+  	func <- function(x, y) {
+    		x*D + y*E + G
+  	}
 	return(func)
-	
 }
 
 
@@ -76,6 +71,9 @@ xl <- rbind(cbind(xy1, 1), cbind(xy2, 2))
 colors <- c("gray", "orange")
 plot(xl[,1], xl[,2], pch = 21, bg = colors[xl[,3]], asp = 1, main = "Линейный дискриминант Фишера")
 
+classif <- function(xl,l,classes,lamda,P){
+
+m <- length(classes)
 first <- xl[xl[,3] == 1, 1:2]
 second <- xl[xl[,3] == 2, 1:2]
 
@@ -88,11 +86,27 @@ x <- y <- seq(-10, 20, len = 100)
 z <- outer(x, y, f)
 contour(x, y, z, levels = 0, drawlabels = FALSE, lwd = 2.5, col = "red", add = TRUE)
 
-l  <-  c(9,0)
-otv <- outer(l[1],l[2],f)
-class <- 2
-if(otv<0) {
-	class <- 1
+max  <- -100000 
+class <- "unknown"
+for(i in 1:m){
+ k <- log(lamda*P)-0.5*t(mu[i,]) %*% solve(sigma) %*% mu[i,]+t(l) %*% solve(sigma) %*% mu[i,]
+ if( k > max ){
+	max <- k
+	class <- classes[i]
+}
+}
+return(class)
 }
 
+l  <-  c(9,0)
+
+class <- classif(xl,l,colors,1,0.5)
 points(l[1],l[2],pch = 21, col=colors[class], asp = 1)
+
+for(i in seq(-3,20,1)){
+for(j in seq(-10,10,1)){
+l<-c(i,j)
+class <- classif(xl,l,colors,1,0.5)
+points(l[1],l[2],pch = 21, col=class, asp = 1)
+}
+}
