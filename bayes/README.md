@@ -211,10 +211,24 @@ sigma2:
 Теперь рассмотрим линейный дискриминант Фишера (ЛДФ), который, в отличии от подстановочного алгоритма, при построении предполагает, что ковариационные матрицы классов равны, и для их восстановления нужно использовать все объекты обучающей выборки.
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf1.png)
 
-Реализация восстановления матрицы
+Реализация 
 
 ```R
+classif <- function(l,sigma,mu,classes,lamda,P){
 
+	m <- length(classes)
+	max  <- -100000 
+	class <- "unknown"
+	for(i in 1:m){
+		k <- log(lamda*P)-0.5*t(mu[i,]) %*% solve(sigma) %*% mu[i,]+t(l) %*% solve(sigma) %*% mu[i,]
+		
+		if( k > max ){
+			max <- k
+			class <- classes[i]
+		}
+	}
+	return(class)
+}
 ```
 
 ### Пример
