@@ -268,8 +268,10 @@ get_matrix <- function(xl1,xl2,mu1,mu2)
 ```
 
 ### Пример
+Классификация 
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf_klass.png) 
+
 
 Для мат ожидания в точке (1;0) и (15;0) с матрицей (2,0,0,2)
 

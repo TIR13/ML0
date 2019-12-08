@@ -73,7 +73,7 @@ xy1 <- mvrnorm(n=c, mu1, sigma1)
 xy2 <- mvrnorm(n=c, mu2, sigma2)
 xl <- rbind(cbind(xy1, 1), cbind(xy2, 2))
 
-colors <- c("green3", "yellow")
+colors <- c("gray", "orange")
 plot(xl[,1], xl[,2], pch = 21, bg = colors[xl[,3]], asp = 1, main = "Линейный дискриминант Фишера")
 
 first <- xl[xl[,3] == 1, 1:2]
