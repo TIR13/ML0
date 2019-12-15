@@ -144,59 +144,23 @@ naiv <- function(x, mu, sigma, lamda, P){
 Реализация:
 
 ```R
-get_mu <- function(xl)
-{
 
-	m <- dim(xl)[2]
-	mu <- matrix(NA, 1, m)
+classif <- function(l,sigma,mu,classes,lamda,P){
+
+	m <- length(classes)
+	max  <- -100000 
+	class <- "unknown"
 	
-	for(i in 1:m)
-	{
-		mu[1,i] <- mean(xl[,i])
+	for(i in 1:m){
+k <- log(lamda*P)-0.5*t(l-mu[i,]) %*% solve(sigma[(2*i-1):(2*i),1:2]) %*% (l-mu[i,])-0.5*log(abs(det(sigma[(2*i-1):(2*i),1:2])))
+		
+		if(k > max){
+			max <- k
+			class <- classes[i]
+		}
 	}
 	
-	return(mu)
-	
-}
-
-get_matrix <- function(xl,mu)
-{
-
-	n <- dim(xl)[1]
-	m <- dim(xl)[2]
-	sigma <- matrix(0, m, m)
-	
-	for(i in 1:n)
-	{
-		sigma <- sigma + (t(xl[i,]-mu) %*% (xl[i,]-mu))
-	}
-	
-	return(sigma/(n-1))
-
-}
-
-coef <- function(mu1,mu2,sigma1,sigma2)
-{
-	  
-	invsigma1 <- solve(sigma1)
-	invsigma2 <- solve(sigma2)
-	a <- invsigma1 - invsigma2
-	A <- a[1,1]
-	B <- a[2,2]
-	C <- 2*a[1,2]
-	
-	b <- invsigma1%*%t(mu1) - invsigma2%*%t(mu2)
-	
-	D <- -2*b[1,1]
-	E <- -2*b[2,1]
-	F <- c(log(det(sigma1)) - log(det(sigma2)) + mu1%*%invsigma1%*%t(mu1) - mu2%*%invsigma2%*%t(mu2))
-	
-	func <- function(x, y) {
-		x^2*A + y^2*B + x*y*C + x*D + y*E + F
-	}
-	
-	return(func)
-	
+	return(class)
 }
 
 
@@ -207,6 +171,10 @@ coef <- function(mu1,mu2,sigma1,sigma2)
 Классификация при помощи подстановочного алгоритма:
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pluginn.png)
+
+Карта классификация с использованием выборки iris при помощи plug-in алгоритма:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/plugin_iris.png)
 
 ### Линия
 
@@ -243,35 +211,35 @@ sigma2:
 Теперь рассмотрим линейный дискриминант Фишера (ЛДФ), который, в отличии от подстановочного алгоритма, при построении предполагает, что ковариационные матрицы классов равны, и для их восстановления нужно использовать все объекты обучающей выборки.
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf1.png)
 
-Реализация восстановления матрицы
+Реализация 
 
 ```R
-get_matrix <- function(xl1,xl2,mu1,mu2)
-{
+classif <- function(l,sigma,mu,classes,lamda,P){
 
-	n <- dim(xl1)[1]
-	m <- dim(xl2)[1]
-	nm <- n+m
-	col <- dim(xl1)[2]
-	sigma <- matrix(0, col, col)
-	for(i in 1:n)
-	{
-		sigma <- sigma + (t(xl1[i,]-mu1) %*% (xl1[i,]-mu1))
+	m <- length(classes)
+	max  <- -100000 
+	class <- "unknown"
+	for(i in 1:m){
+		k <- log(lamda*P)-0.5*t(mu[i,]) %*% solve(sigma) %*% mu[i,]+t(l) %*% solve(sigma) %*% mu[i,]
+		
+		if( k > max ){
+			max <- k
+			class <- classes[i]
+		}
 	}
-
-	for(i in 1:m)
-	{
-		sigma <- sigma + (t(xl2[i,]-mu2) %*% (xl2[i,]-mu2))
-	}
-	return(sigma/(nm+2))
+	return(class)
 }
 ```
 
 ### Пример
+
 Классификация 
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf_klass.png) 
 
+Карта классификация с использованием выборки iris при помощи ldf алгоритма:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ldf_iris.png)
 
 Для мат ожидания в точке (1;0) и (15;0) с матрицей (2,0,0,2)
 
