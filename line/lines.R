@@ -83,7 +83,11 @@ sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {
 		for (i in 1:l){         
 			xi <- xl[i, 1:n]             
 			yi <- xl[i, n + 1]                          
+<<<<<<< HEAD:line/lines.R
 			margins[i] <-  crossprod(w , xi) * yi          
+=======
+			margins[i] <-  sum(w * xi) * yi          
+>>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
 		}  
 		            
 		## select the error objects         
@@ -99,6 +103,7 @@ sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {
 			                      
 			## calculate an error             
 			ex <- loss(xi, yi, w)
+<<<<<<< HEAD:line/lines.R
 	                eta <- 1 / sqrt(sum(xi * xi))
 			w <- upd(xi, yi, w, eta)    
 			if(coll!="unknown"){
@@ -109,6 +114,16 @@ sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {
 				y <- f(x)
 				lines(x, y, type="l",col=coll)
 			}                      
+=======
+	                  eta <- 1/iterCount
+			w <- upd(xi, yi, w, eta)    
+			x <- seq(-2, 2, len = 100)
+			f <- function(x) {
+				return( - x*w[1]/w[2] + w[3]/w[2] )
+			}
+			y <- f(x)
+			lines(x, y, type="l",col=coll)                      
+>>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
 			## Calculate a new Q             
 			Qprev <- Q             
 			Q <- (1 - lambda) * Q + lambda * ex
@@ -132,8 +147,13 @@ n <- 100
 sigma1 <- matrix(c(2,0, 0, 2), 2, 2)
 sigma2 <- matrix(c(2, 0,0, 2), 2, 2)
 
+<<<<<<< HEAD:line/lines.R
 mu1 <- c(4, 4)
 mu2 <- c(12, 4)
+=======
+mu1 <- c(4, 0)
+mu2 <- c(0, 4)
+>>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
 
 xy1 <- mvrnorm(n=n, mu = mu1, Sigma = sigma1)
 xy2 <- mvrnorm(n=n, mu = mu2, Sigma = sigma2)
@@ -155,6 +175,7 @@ plot(c(), type="n", xlab = "x", ylab = "y", xlim=c(plotxmin, plotxmax), ylim = c
 points(xl, pch=21, col=colors[ifelse(xl[,4] == -1, 1, 2)], bg=colors[ifelse(xl[,4] == -1, 1, 2)])
 ada_res <- sg(xl, loss = loss_ada, upd=upd_ada,coll="green")
 abline(a = ada_res[3] / ada_res[2], b = -ada_res[1] / ada_res[2], lwd = 3, col = "green3")
+<<<<<<< HEAD:line/lines.R
 
 hab_res <- sg(xl, loss = loss_hab, upd=upd_hab,coll="red")
 abline(a = hab_res[3] / hab_res[2], b = -hab_res[1] / hab_res[2], lwd = 3, col = "red3")
@@ -180,3 +201,5 @@ for (i in seq(len=50, plotxmin, plotxmax)) {
 }
 
 
+=======
+>>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
