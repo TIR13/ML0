@@ -63,3 +63,47 @@ upd_hab <- function(xi, yi, w, eta) {
 Результат работы алгоритма при помощи ADALINE(Зелёный) и Правило Хэбба(Красный)
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/ha_line.png)
+
+## Логистическая регрессия
+
+Метод логистической регрессии основан на довольно сильных вероятностных предположениях, которые имеют несколько интересных последствий:
+
+1. линейный классификатор оказывается оптимальным байесовским;
+2. однозначно определяется функция потерь;
+3. можно вычислять не только принадлежность объектов классам, но также получать и численные оценки вероятности их принадлежности.
+
+Рассмотрим основные функции:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/Log_loss.png) - функция потерь
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/Log_upd.png) - функция обновления весов
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/ver.png) - вероятность принадлежности к классу 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/sigmoida.png) - сигмоида
+
+Реализация
+
+```R
+sigmoid <- function(x) {
+    return(1 / (1 + exp(-x)))
+}
+
+loss_Log <- function(xi, yi, w) {
+     mi <- c(crossprod(w, xi)) * yi
+     l <- log2(1+exp(-mi))
+     return(l) 
+} 
+upd_Log <- function(xi, yi, w, eta) {
+     W <- w+eta*xi*yi*sigmoid(-sum(w*xi)*yi)
+     return(W)
+}  
+```
+
+### Пример работы логистической регрессии, чем больше вероятность принадлежность элекента к классу, тем темнее цвет:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_log.png)
+
+Результат работы всех трёх алгоритмов:
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_combo.png)
