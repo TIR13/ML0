@@ -38,8 +38,8 @@ upd_hab <- function(xi, yi, w, eta) {
 	W <- w + eta * yi * xi
 	return(W)
 }
-sigmoid <- function(z) {
-    return(1 / (1 + exp(-z)))
+sigmoid <- function(x) {
+    return(1 / (1 + exp(-x)))
 }
 
 loss_Log <- function(xi, yi, w) {
