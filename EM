@@ -1,0 +1,119 @@
+library("MASS")
+
+rasp <- function(x,mu,sigma){
+	return(exp(-0.5*t(x-mu) %*% solve(sigma) %*% (x-mu))/(sqrt(det(sigma))*2*pi))
+}
+
+em <- function(xl,k,teta,eps=1e-5){
+	n <- dim(xl)[1]
+	g <- matrix(0,n,k)
+	g0 <- matrix(0,n,k)
+	iter <- 0
+	repeat{
+		g0 <- g
+		for(i in 1:n){
+			for(j in 1:k){
+				g[i,j] <- teta[j]*rasp(xl[i,1:2],teta[(k+2*j-1):(k+2*j)],matrix(teta[(3*k+4*j-3):(3*k+4*j)],2,2))
+				sum <- 0
+				for(s in 1:k){
+					sum <- sum+teta[s]*rasp(xl[i,1:2],teta[(k+2*s-1):(k+2*s)],matrix(teta[(3*k+4*s-3):(3*k+4*s)],2,2))
+				}
+				g[i,j] <- g[i,j]/sum
+			}
+		}
+		#print(g)
+		wx <- 0
+		for(j in 1:k){
+			wx <- 0
+			mx <- 0
+			sx <- 0
+			for(i in 1:n){
+				wx <- wx+g[i,j]
+				mx <- mx+g[i,j]*xl[i,1:2]
+			}
+			teta[j] <- wx/n	
+			teta[(k+2*j-1):(k+2*j)] <- mx/(n*teta[j])
+			for(i in 1:n){
+				sx <- sx+g[i,j]*(xl[i,1:2]-teta[(k+2*j-1):(k+2*j)]) %*% t(xl[i,1:2]-teta[(k+2*j-1):(k+2*j)])
+			}
+			teta[(3*k+4*j-3):(3*k+4*j)] <- sx/(n*teta[j])
+		}
+		if(max(g-g0)<eps )break
+		iter<-iter+1
+	}
+	return(teta)
+}
+
+em_add <- function(xl,R=5,m0=40){
+	n <- dim(xl)[1]
+	k<-1
+	w<-rep(0,n/2)
+	mu<-rep(0,n)
+	sigma<-rep(0,2*n)
+	w[k]<-1
+	#g<-matrix(0,n,100)
+	for(i in 1:n){
+		mu[k:(k+1)] <- mu[k:(k+1)]+xl[i,1:2]/n
+	}
+	for(i in 1:n){
+		sigma[k:(k+3)] <- sigma[k:(k+3)]+t(t(xl[i,1:2]-mu[k:(k+1)])) %*% (xl[i,1:2]-mu[k:(k+1)])/n
+	}
+	#em(xl,k,c(w[k],mu[k],sigma[k]))
+	repeat{
+		p <- rep(0,n)
+		for(i in 1:n){
+			for(j in 1:k){
+				p[i]<-p[i]+w[j]*rasp(xl[i,1:2],mu[(2*j-1):(2*j)],matrix(sigma[(4*j-3):(4*j)],2,2))
+			}
+
+		}
+		U <- data.frame()
+		for(i in 1:n){
+			if(p[i]<max(p)/R)U <- rbind(U,xl[i,1:2])
+		}
+		u<-dim(U)[1]
+		print(u)
+		if(u<m0)break
+		k<-k+1
+		sum1 <- 0
+		w[k]=u/n
+		for(i in 1:u){
+			mu[(2*k-1):(2*k)]<-mu[(2*k-1):(2*k)]+c(U[i,1],U[i,2])/(n*w[k])
+		}
+		for(i in 1:u){
+			sigma[(4*k-3):(4*k)]<-sigma[(4*k-3):(4*k)]+(c(U[i,1],U[i,2])) %*% t(c(U[i,1],U[i,2]))/(n*w[k])
+		}
+		for(j in 1:k-1){
+			w[j]=w[j]*(1-w[k])
+		}
+		teta <- em(xl,k,c(w[1:k],mu[1:(2*k)],sigma[1:(4*k)]),1e-3)
+		w[1:k] <- teta[1:k]
+		mu[1:(2*k)] <- teta[(k+1):(3*k)]
+		sigma[1:(4*k)] <- teta[(3*k+1):(7*k)]
+	}
+	return(c(k,w,mu,sigma))
+}
+
+n <- 100
+
+sigma1 <- matrix(c(2,0, 0, 2), 2, 2)
+sigma2 <- matrix(c(1, 0,0, 1), 2, 2)
+
+mu1 <- c(4, 4)
+mu2 <- c(12, 4)
+
+xy1 <- mvrnorm(n=n, mu = mu1, Sigma = sigma1)
+xy2 <- mvrnorm(n=n, mu = mu2, Sigma = sigma2)
+xl <- rbind(xy1,xy2)
+xl <- cbind(xl, c(rep(-1, n), rep(1, n)))
+
+plotxmin <- min(xl[,1], xl[,1]) - 0.3
+plotxmax <- max(xl[,1], xl[,1]) + 0.3
+plotymin <- min(xl[,2], xl[,2]) - 0.5
+plotymax <- max(xl[,2], xl[,2]) + 0.5
+
+# а аИббаЕаМ аОаБббаАбббб аВбаБаОбаКб
+colors <- c("gray", "orange")
+plot(c(), type="n", xlab = "x", ylab = "y", xlim=c(plotxmin, plotxmax), ylim = c(plotymin, plotymax), main="ADALINE & HEBB")
+
+points(xl, pch=21, col=colors[ifelse(xl[,3] == -1, 1, 2)], bg=colors[ifelse(xl[,3] == -1, 1, 2)])
