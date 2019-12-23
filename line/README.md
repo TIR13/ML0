@@ -39,6 +39,9 @@ upd_ada <- function(xi, yi, w, eta) {
 	return(W)
 }
 ```
+Результат работы алгоритма при помощи ADALINE
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_adaline.png)
 
 ## Персептрон Розенблатта
 
@@ -61,9 +64,9 @@ upd_hab <- function(xi, yi, w, eta) {
 ```
 
 ### Пример 
-Результат работы алгоритма при помощи ADALINE(Зелёный) и Правило Хэбба(Красный)
+Результат работы алгоритма при помощи Правило Хэбба
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/ha_line.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_habb.png)
 
 ## Логистическая регрессия
 
