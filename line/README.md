@@ -64,9 +64,9 @@ upd_hab <- function(xi, yi, w, eta) {
 ```
 
 ### Пример 
-Результат работы алгоритма при помощи Правило Хэбба
+Результат работы алгоритма при помощи ADALINE и Правило Хэбба 
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_habb.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/ha_line.png)
 
 ## Логистическая регрессия
 
