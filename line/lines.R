@@ -1,5 +1,5 @@
 library("MASS")
-library(plotrix)
+
 
 normali <- function(xl) {     
 	n <- dim(xl)[2]
@@ -13,45 +13,8 @@ normali <- function(xl) {
     return(xl) 
 } 
 
-loss_ada <- function(xi, yi, w) {
-	mi <-sum(w*xi) * yi
-	l <- (mi - 1)^2
-	return(l)
-}
 
-# дельта правило обновления для ADALINE
-upd_ada <- function(xi, yi, w, eta) {
-	wx <- sum(w * xi)
-	ld <- (wx - yi) * xi
-	W <- w - eta * ld
-	return(W)
-}
 
-# Кусочно-линейную функцию потерь для Хебба
-loss_hab <- function(xi, yi, w) {
-	mi <- sum(w * xi) * yi
-	return (max(-mi, 0))
-}
-
-# правило Хебба для весов
-upd_hab <- function(xi, yi, w, eta) {
-	W <- w + eta * yi * xi
-	return(W)
-}
-sigmoid <- function(z) {
-    return(1 / (1 + exp(-z)))
-}
-
-loss_Log <- function(xi, yi, w) {
-     mi <- c(crossprod(w, xi)) * yi
-     l <- log2(1+exp(-mi))
-     return(l) 
-} 
-upd_Log <- function(xi, yi, w, eta) {
-     W <- w+eta*xi*yi*sigmoid(-sum(w*xi)*yi)
-     return(W)
-
-}  
 sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {     
 	l <- dim(xl)[1]     
 	n <- dim(xl)[2] - 1        
@@ -66,8 +29,9 @@ sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {
 		## calculate the scalar product <w,x>         
 		xi <- xl[i, 1:n]
 		yi <- xl[i, n + 1] 
-		          
-		Q <- Q + loss(xi, yi, w)        
+		mi <- sum(w * xi) * yi
+	          
+		Q <- Q + (max(-mi, 0))        
 	}  
 	  
 	iterCount <- 0    
@@ -83,11 +47,8 @@ sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {
 		for (i in 1:l){         
 			xi <- xl[i, 1:n]             
 			yi <- xl[i, n + 1]                          
-<<<<<<< HEAD:line/lines.R
+
 			margins[i] <-  crossprod(w , xi) * yi          
-=======
-			margins[i] <-  sum(w * xi) * yi          
->>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
 		}  
 		            
 		## select the error objects         
@@ -100,30 +61,18 @@ sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {
 			xi <- xl[i, 1:n]             
 			yi <- xl[i, n + 1]               
 			           
-			                      
+			mi <- sum(w * xi) * yi                      
 			## calculate an error             
-			ex <- loss(xi, yi, w)
-<<<<<<< HEAD:line/lines.R
-	                eta <- 1 / sqrt(sum(xi * xi))
-			w <- upd(xi, yi, w, eta)    
-			if(coll!="unknown"){
-				x <- seq(-2, 2, len = 100)
-				f <- function(x) {
-					return( - x*w[1]/w[2] + w[3]/w[2] )
-				}
-				y <- f(x)
-				lines(x, y, type="l",col=coll)
-			}                      
-=======
-	                  eta <- 1/iterCount
-			w <- upd(xi, yi, w, eta)    
+			ex <- max(-mi,0)
+
+	                eta <- 1/iterCount
+			w <- w + eta * yi * xi   
 			x <- seq(-2, 2, len = 100)
 			f <- function(x) {
 				return( - x*w[1]/w[2] + w[3]/w[2] )
 			}
 			y <- f(x)
 			lines(x, y, type="l",col=coll)                      
->>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
 			## Calculate a new Q             
 			Qprev <- Q             
 			Q <- (1 - lambda) * Q + lambda * ex
@@ -147,13 +96,10 @@ n <- 100
 sigma1 <- matrix(c(2,0, 0, 2), 2, 2)
 sigma2 <- matrix(c(2, 0,0, 2), 2, 2)
 
-<<<<<<< HEAD:line/lines.R
+
 mu1 <- c(4, 4)
 mu2 <- c(12, 4)
-=======
-mu1 <- c(4, 0)
-mu2 <- c(0, 4)
->>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
+
 
 xy1 <- mvrnorm(n=n, mu = mu1, Sigma = sigma1)
 xy2 <- mvrnorm(n=n, mu = mu2, Sigma = sigma2)
@@ -175,7 +121,7 @@ plot(c(), type="n", xlab = "x", ylab = "y", xlim=c(plotxmin, plotxmax), ylim = c
 points(xl, pch=21, col=colors[ifelse(xl[,4] == -1, 1, 2)], bg=colors[ifelse(xl[,4] == -1, 1, 2)])
 ada_res <- sg(xl, loss = loss_ada, upd=upd_ada,coll="green")
 abline(a = ada_res[3] / ada_res[2], b = -ada_res[1] / ada_res[2], lwd = 3, col = "green3")
-<<<<<<< HEAD:line/lines.R
+
 
 hab_res <- sg(xl, loss = loss_hab, upd=upd_hab,coll="red")
 abline(a = hab_res[3] / hab_res[2], b = -hab_res[1] / hab_res[2], lwd = 3, col = "red3")
@@ -201,5 +147,4 @@ for (i in seq(len=50, plotxmin, plotxmax)) {
 }
 
 
-=======
->>>>>>> ac42e125b938bf3cbbc377fb4ce22517eaeee7c6:line/ada_hab.R
+
