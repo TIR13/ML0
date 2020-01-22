@@ -13,6 +13,37 @@ normali <- function(xl) {
     return(xl) 
 } 
 
+<<<<<<< HEAD
+=======
+loss_ada <- function(xi, yi, w) {
+	mi <-sum(w*xi) * yi
+	l <- (mi - 1)^2
+	return(l)
+}
+
+# дельта правило обновления для ADALINE
+upd_ada <- function(xi, yi, w, eta) {
+	wx <- sum(w * xi)
+	ld <- (wx - yi) * xi
+	W <- w - eta * ld
+	return(W)
+}
+
+# Кусочно-линейную функцию потерь для Хебба
+loss_hab <- function(xi, yi, w) {
+	mi <- sum(w * xi) * yi
+	return (max(-mi, 0))
+}
+
+# правило Хебба для весов
+upd_hab <- function(xi, yi, w, eta) {
+	W <- w + eta * yi * xi
+	return(W)
+}
+sigmoid <- function(x) {
+    return(1 / (1 + exp(-x)))
+}
+>>>>>>> c4442442f6e911609bcb85945d2a2fc0f757a72d
 
 
 sg <- function(xl,loss,upd,coll, eta = 1, lambda = 1/6, eps = 1e-5) {     

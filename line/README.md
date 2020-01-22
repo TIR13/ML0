@@ -2,6 +2,7 @@
 
 - [Адаптивны линейный элемент](#Адаптивны-линейный-элемент)
 - [Персептрон Розенблатта](#Персептрон-Розенблатта)
+- [Логистическая регрессия](#Логистическая-регрессия)
 ---
 
 ## Линейные алгоритмы классификации
@@ -38,6 +39,9 @@ upd_ada <- function(xi, yi, w, eta) {
 	return(W)
 }
 ```
+Результат работы алгоритма при помощи ADALINE
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_adaline.png)
 
 ## Персептрон Розенблатта
 
@@ -60,7 +64,7 @@ upd_hab <- function(xi, yi, w, eta) {
 ```
 
 ### Пример 
-Результат работы алгоритма при помощи ADALINE(Зелёный) и Правило Хэбба(Красный)
+Результат работы алгоритма при помощи ADALINE и Правило Хэбба 
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/ha_line.png)
 
@@ -104,6 +108,6 @@ upd_Log <- function(xi, yi, w, eta) {
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_log.png)
 
-Результат работы всех трёх алгоритмов:
+Результат работы всех трёх алгоритмов ADALINE(зелёным), Правило Хэба(красным), Логистическая регрессия(синим):
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/line/img/map_combo.png)
