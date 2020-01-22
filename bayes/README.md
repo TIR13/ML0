@@ -254,3 +254,24 @@ sigma:
 1.953001883 -0.001501422
 -0.001501422  1.83128977965
 ```
+
+
+## RBF-сети
+
+Радиальная функция — это функция f(x), зависящая только от расстояния между x и фиксированной точкой пространства X. Для определения наших радиальных функий введем метрику: 
+
+Нормальное распределение (гауссиан)  ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pjx.gif).
+
+Постановка задачи:
+
+Построить алгоритм, который бы решал задачу классификации байесовским алгоритмом (частный случай EM-алгоритма) в предположении, что плотность распределения представима в виде смеси гауссовских распределений с диагональными матрицами ковариации.
+
+Пусть ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ym.gif)  - число классов, каждый класс ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/yy.gif) имеет свою плотность распределения ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyx.gif) , которая представимы в виде смесей (https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ky.gif) компонент. Каждая компонента имеет n-мерную гауссовскую плотность с параметрами 
+
+(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/myj.gif) - центр
+(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/syj.gif) - ковариационная матрица 
+(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/jk.gif)
+(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyx2.gif) - смесь плотностей
+(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyjx.gif) - плотность каждой компоненты смеси (имеет вид гауссианы)
+(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/sjky.gif)  - условия нормировки и неотрицательности весов
+
