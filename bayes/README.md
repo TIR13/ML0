@@ -3,6 +3,7 @@
 - [Наивный байесовский классификатор](#Наивный-байесовский-классификатор)
 - [Plug-in алгоритм](#Plug-in-алгоритм)
 - [LDF](#Линейный-Дискриминант-Фишера)
+- [RBF](#RBF-сети)
 ---
 ## Линии уровня нормального распределения
 Вероятностное распределение с плотностью ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/tex.png) 
@@ -266,12 +267,37 @@ sigma:
 
 Построить алгоритм, который бы решал задачу классификации байесовским алгоритмом (частный случай EM-алгоритма) в предположении, что плотность распределения представима в виде смеси гауссовских распределений с диагональными матрицами ковариации.
 
-Пусть ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ym.gif)  - число классов, каждый класс ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/yy.gif) имеет свою плотность распределения ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyx.gif) , которая представимы в виде смесей (https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ky.gif) компонент. Каждая компонента имеет n-мерную гауссовскую плотность с параметрами 
+Пусть ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ym.gif)  - число классов, каждый класс ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/yy.gif) имеет свою плотность распределения ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyx.gif) , которая представимы в виде смесей ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/ky.gif) компонент. Каждая компонента имеет n-мерную гауссовскую плотность с параметрами 
 
-(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/myj.gif) - центр
-(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/syj.gif) - ковариационная матрица 
-(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/jk.gif)
-(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyx2.gif) - смесь плотностей
-(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyjx.gif) - плотность каждой компоненты смеси (имеет вид гауссианы)
-(https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/sjky.gif)  - условия нормировки и неотрицательности весов
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/myj.gif) - центр
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/syj.gif) - ковариационная матрица 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/jk.gif)
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyx2.gif) - смесь плотностей
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyjx.gif) - плотность каждой компоненты смеси (имеет вид гауссианы)
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/sjky.gif)  - условия нормировки и неотрицательности весов
+
+#### Алгоритм классификации 
+
+Запишем основную формулу байесовского классификатора ![raspr](http://www.machinelearning.ru/mimetex/?a(x)%20=%20argmax%20_{y%20\in%20Y}%20\lambda%20_y%20P%20_y%20p_y(x)). Выразим плотность каждой компоненты ![raspr](http://www.machinelearning.ru/mimetex/?p_{yj}(x)) через взвешенное евклидово расстояние от объекта x до центра компоненты ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/mu.gif) 
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/argmax.gif)
+
+где ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/nyj.gif) - нормировочные множители. 
+
+Алгоритм имеет вид нейронной сети, состоящей из трёх уровней или слоёв.
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/NS.png)
+
+Первый слой образован ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/1sl.gif)  гауссианами ![raspr](http://www.machinelearning.ru/mimetex/?p_{yj}(x),%20y%20\in%20Y%20,%20j%20=%201,%20\dots,%20k_y). На входе они принимают описание объекта x, на выходе выдают оценки близости объекта x к центрам ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/mu.gif) , равные значениям плотностей компонент в точке x. Второй слой состоит из M сумматоров, вычисляющих взвешенные средние этих оценок с весами ![raspr](http://www.machinelearning.ru/mimetex/?w_{yj}) . На выходе второго слоя появляются оценки близости объекта x каждому из классов, равные значениям плотностей классов ![raspr](http://www.machinelearning.ru/mimetex/?p_{yj}(x)). Третий слой образуется единственным блоком argmax, принимающим окончательное решение об отнесении объекта x к одному из классов. Таким образом, при классификации объекта x оценивается его близость к каж- дому из центров ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/mu.gif). Объект относится к тому классу, к чьим центрам он располагается ближе.
+
+Обучение сводится к восстановлению плотности каждого из классов ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/pyx.gif) с помощью EM-алгоритма. 
+
+### Пример
+
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/rbf.gif)
 
