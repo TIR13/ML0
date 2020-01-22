@@ -301,3 +301,38 @@ sigma:
 
 ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/rbf.png)
 
+Реализация блока argmax:
+
+```R
+argmax <- function(l1,l2,z,lamda1=0.5,lamda2=0.5,Py1=0.6,Py2=0.4){
+	k1 <- length(l1)/7
+	k2 <- length(l2)/7
+
+	w1 <- l1[1:k1]
+	w2 <- l2[1:k2]
+
+	mu1 <- l1[(k1+1):(3*k1)]
+	mu2 <- l2[(k2+1):(3*k2)]
+
+	sigma1 <- l1[(3*k1+1):(7*k1)]
+	sigma2 <- l2[(3*k2+1):(7*k2)]
+
+	class <- "unknown"
+	p1 <- 0
+ 	for(j in 1:k1){
+		p1 <- p1 + w1[j]*rasp(z,mu1[(2*j-1):(2*j)],matrix(sigma1[(4*j-3):(4*j)],2,2))
+	}
+	p2 <- 0 
+	for(j in 1:k2){
+		p2 <- p2 + w2[j]*rasp(z,mu2[(2*j-1):(2*j)],matrix(sigma2[(4*j-3):(4*j)],2,2))
+	}
+	
+	if(p1*lamda1*Py1>p2*lamda2*Py2)
+		class <- 1
+	else 
+		class <- 2
+	
+	return(class)
+}
+
+```
