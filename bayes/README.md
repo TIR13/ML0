@@ -291,7 +291,7 @@ sigma:
 
 Алгоритм имеет вид нейронной сети, состоящей из трёх уровней или слоёв.
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/NS.png)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/NS.PNG)
 
 Первый слой образован ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/1sl.gif)  гауссианами ![raspr](http://www.machinelearning.ru/mimetex/?p_{yj}(x),%20y%20\in%20Y%20,%20j%20=%201,%20\dots,%20k_y). На входе они принимают описание объекта x, на выходе выдают оценки близости объекта x к центрам ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/mu.gif) , равные значениям плотностей компонент в точке x. Второй слой состоит из M сумматоров, вычисляющих взвешенные средние этих оценок с весами ![raspr](http://www.machinelearning.ru/mimetex/?w_{yj}) . На выходе второго слоя появляются оценки близости объекта x каждому из классов, равные значениям плотностей классов ![raspr](http://www.machinelearning.ru/mimetex/?p_{yj}(x)). Третий слой образуется единственным блоком argmax, принимающим окончательное решение об отнесении объекта x к одному из классов. Таким образом, при классификации объекта x оценивается его близость к каж- дому из центров ![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/mu.gif). Объект относится к тому классу, к чьим центрам он располагается ближе.
 
@@ -299,5 +299,5 @@ sigma:
 
 ### Пример
 
-![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/rbf.gif)
+![raspr](https://raw.githubusercontent.com/TIR13/ML0/master/bayes/img/rbf.png)
 
